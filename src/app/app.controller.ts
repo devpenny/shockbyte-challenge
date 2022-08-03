@@ -14,4 +14,9 @@ export class AppController {
   async login(@Body() body: ILoginDTO): Promise<any> {
     return await this.authService.login(body);
   }
+
+  @Get('health')
+  health() : string {
+    return "UP";
+  }
 }

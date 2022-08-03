@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 
 config();
 const configService = new ConfigService();
@@ -11,13 +11,8 @@ export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   validateUser(username: string, password: string): Promise<any> {
-    if (
-      username === configService.get('ADMIN_USERNAME') &&
-      password === configService.get('ADMIN_PASSWORD')
-    ) {
-      return null;
-    } else {
-      throw new UnauthorizedException({ msg: 'You are not the admin' });
+    if (credentialsDoesntMatch(username, password)) {
+      throw new UnauthorizedException({ msg: 'You are not authorized' });
     }
   }
 
@@ -30,4 +25,9 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+}
+
+function credentialsDoesntMatch(username: string, password: string): Boolean {
+  return username !== configService.get('ADMIN_USERNAME') ||
+    password !== configService.get('ADMIN_PASSWORD')
 }

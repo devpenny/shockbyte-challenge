@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportModule } from '@nestjs/passport';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
 import { DataModule } from '../data/data.module';
 import { DataEntity } from '../typeorm/entities/data.entity';
 import { AuthModule } from 'src/auth/auth.module';
-import { PassportModule } from '@nestjs/passport';
-import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Module({
   imports: [
