@@ -23,8 +23,8 @@ export class DataController {
   constructor(private readonly dataService: DataService) {}
 
   @Post()
-  async create(@Body() dataBody: ICreateDataDTO): Promise<Data> {
-    const dataToCreate = this.dataFromCreate(dataBody);
+  async create(@Body() createDto: ICreateDataDTO): Promise<Data> {
+    const dataToCreate = this.dataFromCreate(createDto);
 
     const createdData = await this.dataService.create(dataToCreate);
     return { ...createdData };
@@ -32,12 +32,12 @@ export class DataController {
 
   @Get()
   async findAll(
-    @Query('page') page = 0,
-    @Query('limit') limit = 10,
+    @Query('page') page,
+    @Query('limit') limit,
   ): Promise<Data[]> {
     const paginationConfig: IPaginationDTO = {
-      page,
-      limit,
+      page = 0,
+      limit = 10,
     };
     const foundData = await this.dataService.findAll(paginationConfig);
 
@@ -51,8 +51,8 @@ export class DataController {
   }
 
   @Put()
-  async updateOne(@Body() dataBody: IUpdateDataDTO): Promise<Data> {
-    const dataToUpdate = this.dataFromUpdate(dataBody);
+  async updateOne(@Body() updateDto: IUpdateDataDTO): Promise<Data> {
+    const dataToUpdate = this.dataFromUpdate(updateDto);
 
     const updatedData = await this.dataService.update(dataToUpdate);
     return { ...updatedData };
@@ -64,7 +64,6 @@ export class DataController {
     await this.dataService.delete(id);
   }
 
-  /////////////// Factories ///////////////
   dataFromCreate(dtoCreate: ICreateDataDTO): Data {
     return new Data({
       systemUptime: dtoCreate.systemUptime,

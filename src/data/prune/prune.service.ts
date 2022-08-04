@@ -44,6 +44,7 @@ export class PruneService {
   //////////////  Real Cron for the application //////////////
   @Cron('* 0 * * * *')
   async pruneDataOlderThan24hrs() {
+    // CRIAR MÉTODO NO ADAPTER E ENCAPSULAR
     await this.dataRepository
       .createQueryBuilder()
       .delete()

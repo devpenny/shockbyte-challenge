@@ -18,7 +18,7 @@ export class DataService {
   async findById(id: string): Promise<Data> {
     const foundData = await this.dataAccessAdapter.findById(id);
 
-    if (!foundData) throw new NotFoundException('Data not found.');
+    if (!foundData) throw new NotFoundException(`Data not found with id ${id}`);
 
     return foundData;
   }
@@ -26,7 +26,7 @@ export class DataService {
   async update(data: Data): Promise<Data> {
     const foundData = await this.dataAccessAdapter.findById(data.id);
 
-    if (!foundData) throw new NotFoundException('Data not found.');
+    if (!foundData) throw new NotFoundException(`Data not found with id ${id}`);
 
     return await this.dataAccessAdapter.update(data);
   }
@@ -34,7 +34,7 @@ export class DataService {
   async delete(id: string) {
     const foundData = await this.dataAccessAdapter.findById(id);
 
-    if (!foundData) throw new NotFoundException('Data not found.');
+    if (!foundData) throw new NotFoundException(`Data not found with id ${id}`);
 
     return await this.dataAccessAdapter.delete(id);
   }

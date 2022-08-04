@@ -15,9 +15,8 @@ export class DataAccessAdapter implements IDataRepository {
 
   async create(data: Data): Promise<Data> {
     const savedData = await this.dataRepository.save(data);
-    const createdData = this.dataFromEntity(savedData);
 
-    return createdData;
+    return this.dataFromEntity(savedData);
   }
 
   async findAll(paginationConfig: IPaginationDTO): Promise<Data[]> {
@@ -38,11 +37,9 @@ export class DataAccessAdapter implements IDataRepository {
   async findById(id: string): Promise<Data | undefined> {
     const foundData = await this.dataRepository.findOne({ where: { id } });
 
-    if (foundData) {
-      return this.dataFromEntity(foundData);
-    }
-
-    return;
+    if (!foundData) return 
+    
+    return this.dataFromEntity(foundData);
   }
 
   async update(data: Data): Promise<Data> {
@@ -55,16 +52,13 @@ export class DataAccessAdapter implements IDataRepository {
       .returning('*')
       .execute();
 
-    const updatedData = this.dataFromUpdateResult(dataToUpdate);
-
-    return updatedData;
+      return this.dataFromUpdateResult(dataToUpdate);
   }
 
   async delete(id: string) {
     await this.dataRepository.delete(id);
   }
 
-  /////////////// Factories ///////////////
   dataFromEntity(dataEntity: DataEntity): Data {
     return new Data({
       systemUptime: dataEntity.systemUptime,
